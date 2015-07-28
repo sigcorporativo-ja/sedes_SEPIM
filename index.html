@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+        
+        <link rel="stylesheet" href="js/lib/jquery-mobile/jquery.mobile-1.4.5.min.css" />
+	<script src="js/lib/jquery-mobile/jquery-1.11.1.min.js"></script>
+	<script src="js/lib/jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
+	<script src="js/lib/fastclick.js"></script>
+		
+        <title>SEPIM</title>
+                
+    </head>
+    <body>
+    		<!-- Página principal -->
+		<div data-role="page" id="inicio">
+			<div data-role="header">
+				<h1 id="app-name">Inicio</h1>
+			</div>
+	
+			<div role="main" class="ui-content">
+				<a class="ui-btn ui-shadow ui-corner-all ui-btn-b" data-direction="reverse" href="javascript:geolocalizar()">Cerca de mi</a>
+				<a id="btn-buscar" class="ui-btn ui-shadow ui-corner-all ui-btn-b" data-direction="reverse" href="javascript:cargarCategoria()">Búsqueda por categoría</a>
+				<a class="ui-btn ui-shadow ui-corner-all ui-btn-b" data-direction="reverse" href="#busqueda">Búsqueda por texto libre</a>
+				
+			</div>
+	
+			<!-- 
+			<div data-role="footer" data-theme="a">
+				<h4>footer</h4>
+			</div>
+			 -->
+		</div>
+		<!-- Página principal -->
+		
+		<!-- Página localizador -->
+		<div data-role="page" id="busqueda">
+			<div data-role="header">
+				<a href="javascript:inicio()" data-icon="back">Atrás</a>
+				<h1>Búsqueda</h1>
+				<a href="javascript:inicio()" data-icon="home">Inicio</a>
+			</div>
+			
+			<div role="main" class="ui-content">
+				<input id="txtBusqueda" type="search">
+				<a class="ui-btn ui-shadow ui-corner-all ui-btn-b" href="javascript:buscarGeobusquedas($('#txtBusqueda').val(),listarResultadosGB)">Buscar</a>			    
+				<ul id="listSuggest" data-role="listview" data-inset="true"></ul>
+			</div>
+			
+		</div>
+		<!-- Página localizador -->
+
+		<!-- Página localizador -->
+		<div data-role="page" id="localizador">
+			<div data-role="header">
+				<a href="javascript:inicio()" data-icon="back">Atrás</a>
+				<h1>Localizador</h1>
+				<a href="javascript:inicio()" data-icon="home">Inicio</a>
+			</div>
+			
+			<div role="main" class="ui-content">
+				<div class="ui-field-contain">
+				    <select name="provincias" id="provincias" onchange="cargarMunicipios()">
+				    </select>
+				    <select name="municipios" id="municipios">
+				    </select>
+					<a href="javascript:establecerLocalizacion()" class="ui-btn">Aceptar</a>
+				</div>
+			</div>
+			
+			<!-- 
+			<div data-role="footer" data-theme="a">
+				<h4>footer</h4>
+			</div>
+			 -->
+		</div>
+		<!-- Página localizador -->
+		
+		
+		<!-- Página Categorías -->
+		<div data-role="page" id="categorias">
+			<div data-role="header">
+				<a href="javascript:atras()" data-icon="back">Atrás</a>
+				<h1>Categorías</h1>
+				<a href="javascript:inicio()" data-icon="home">Inicio</a>
+			</div>
+	
+			<div role="main" class="ui-content" id="contenidoCategorias">
+			
+			</div>
+	
+			<!-- 
+			<div data-role="footer" data-theme="a" data-position="fixed">
+				<div style="text-align:center">
+					 <a href="#" class="ui-btn">Ver mapa</a>
+				</div>
+			</div>
+			 -->
+		</div>
+		<!-- Página Categorías -->
+		
+		
+		<!-- Página datos -->
+		<div data-role="page" id="datos">
+			<div data-role="header" data-position="fixed">
+				<a href="javascript:atras()" data-icon="back">Atrás</a>
+				<h1>Datos</h1>
+				<a href="javascript:inicio()" data-icon="home">Inicio</a>
+			</div>
+			<div role="main" class="ui-content">
+				
+				<ul id="listaDatos" data-role="listview" data-filter="true" data-filter-placeholder="Filtra resultados"></ul>
+
+				
+			</div>
+		</div>
+		<!-- Página datos -->
+		
+		
+		<!-- Página mapa -->
+		<div data-role="page" id="mapa">
+			<div id="mapa-header" data-role="header" data-position="fixed" data-fullscreen="true">
+				<a href="javascript:atrasMapa()" data-icon="back">Atrás</a>
+				<h1>Mapa</h1>
+				<a href="javascript:inicio()" data-icon="home">Inicio</a>
+			</div>
+			<div id="map" role="main" class="ui-content" style="padding:0px;">
+				<iframe id="mapea" style="position:absolute; width:100%; height:100%;border:none;">
+				</iframe>
+			</div>
+		</div>
+		<!-- Página mapa -->
+
+     	
+        <script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/config.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript">
+              	// </parametros de configuracion>	
+               	init();
+        </script>
+    </body>
+</html>
