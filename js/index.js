@@ -1,3 +1,15 @@
+//codigo para corregir un bug que tiene Jquery => https://github.com/jquery/jquery/pull/370/files
+//====================================================================================
+$(document).ready(function(){
+	jQuery.support = (function() {
+		marginDiv.style.marginRight = "0";
+		div.appendChild( marginDiv );
+		support.reliableMarginRight =
+		 ( parseInt( ( document.defaultView.getComputedStyle( marginDiv, null ) || { marginRight: 0 } ).marginRight, 10 ) || 0 ) === 0;
+	});
+});
+//====================================================================================
+
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
 	document.addEventListener("backbutton", onBackButton, false);
@@ -31,22 +43,7 @@ function obtenerUrlComoObjeto(url){
 	return urlObjeto;
 }
 
-
-//codigo para corregir un bug que tiene Jquery => https://github.com/jquery/jquery/pull/370/files
-//TODO => ¿poner en otro sitio?
-//====================================================================================
-$(document).ready(function(){
-	jQuery.support = (function() {
-		marginDiv.style.marginRight = "0";
-		div.appendChild( marginDiv );
-		support.reliableMarginRight =
-		 ( parseInt( ( document.defaultView.getComputedStyle( marginDiv, null ) || { marginRight: 0 } ).marginRight, 10 ) || 0 ) === 0;
-	});
-});
-//====================================================================================
-
 // controladores
-
 function loading(showLoading){
 	if(showLoading){
 		$.mobile.loading( "show",{});
@@ -379,12 +376,7 @@ function generarCapaKML(idCategoria,idDato){
 }
 
 //funcion de entrada
-function init(){	
-	cargarAplicacion();	
-}
-
-function cargarAplicacion(){
-	//console.log("cargarAplicacion");
+function init(){
 	loading(true);
 	$.ajax({
 		 url: url + "/application/" + idAplicacion,
@@ -403,6 +395,9 @@ function cargarAplicacion(){
 	    	 }
 	    	 if(aplicacion.wmcURL && aplicacion.wmcURL.trim().length>0){
 	    		srcMapeaObjeto = obtenerUrlComoObjeto(aplicacion.wmcURL); //JGL - eliminación srcMapea
+	    	 }
+	    	 if (urlGB != ""){
+	    	 	$("#btn-gb").show();
 	    	 }
 	    	 //$.mobile.changePage("#inicio");
 		navigator.splashscreen.hide();
@@ -461,7 +456,7 @@ $(document).on("pageinit", "#busqueda", function() {
 	        $ul.html( "" );
 	        if ( value && value.length > 2 ) {
 	            $.ajax({
-	                url: urlSuggest,
+	                url: urlGB + "/suggest",
 			        dataType: "jsonp",
 			        jsonp: 'json.wrf',
 			        data: {
@@ -489,7 +484,7 @@ $(document).on("pageinit", "#busqueda", function() {
 function buscarGeobusquedas(query, callback){
 	loading(true);
 	$.ajax({
-        url: urlCore,
+        url: urlGB + "/search",
         dataType: "jsonp",
         jsonp: 'json.wrf',
         data: {
