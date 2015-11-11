@@ -198,9 +198,10 @@ function cargarCategoria(cat){
 
 
 function cargarDatos(cat){
-	//console.log("cargarDatos");
+	//console.log(cat);
 	pilaCategorias.push(cat);
 	datos.offset = 0;
+    $("#titleDatos").html(cat.name);
 	$("#listaDatos").html("");
 	$.mobile.changePage("#datos");
 	paginarDatos(cat);
