@@ -1,5 +1,5 @@
 //******** configuración **********************//
-url = "http://10.240.203.94:8080/sepim_server/api";
+url = "http://mapea-sigc.juntadeandalucia.es/sepim_server/api";
 urlGB = "http://geobusquedas-sigc.juntadeandalucia.es/geobusquedas/[CORE]"; //JGL - vacío si no tiene GB
 idAplicacion = 14; //id de la aplicación
 //*********************************************//
