@@ -2,24 +2,24 @@
 <html>
     <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
 	<meta name="format-detection" content="telephone=no" />
-	<meta name="viewport" content="user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<meta http-equiv="Content-Security-Policy" content="default-src *; img-src * data: blob: filesystem:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
         
-        <link rel="stylesheet" href="js/lib/jquery-mobile/jquery.mobile-1.4.5.min.css" />
-        <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="js/lib/jquery/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
 
-	<script src="js/lib/jquery-mobile/jquery-1.11.1.min.js"></script>
-	<script src="js/lib/jquery-mobile/jquery.mobile-1.4.5.min.js"></script>
-	<script src="js/lib/fastclick.js"></script>
+	<script src="js/lib/jquery/jquery-1.12.1.min.js"></script>
+	<script src="js/lib/jquery/jquery.mobile-1.4.5.min.js"></script>
+ 	<script src="js/lib/fastclick.js"></script>
 		
         <title>SEPIM</title>
                 
     </head>
     <body>
-    		<!-- Página principal -->
+    	<!-- Página principal -->
 		<div data-role="page" id="inicio">
-			<div data-role="header">
+			<div data-role="header" data-position="fixed">
 				<h1 id="app-name">Inicio</h1>
 			</div>
 	
@@ -28,19 +28,12 @@
 				<a id="btn-buscar" class="ui-btn ui-shadow ui-corner-all ui-btn-b" data-direction="reverse" href="javascript:cargarCategoria()">Búsqueda por categoría</a>
 				<a id ="btn-gb" class="ui-btn ui-shadow ui-corner-all ui-btn-b" style="display: none" data-direction="reverse" href="#busqueda">Búsqueda por texto libre</a>
 				
-			</div>
-	
-			<!-- 
-			<div data-role="footer" data-theme="a">
-				<h4>footer</h4>
-			</div>
-			 -->
-		</div>
-		<!-- Página principal -->
+			</div>			
+		</div><!-- Página principal -->
 		
-		<!-- Página localizador -->
+		<!-- Página búsqueda -->
 		<div data-role="page" id="busqueda">
-			<div data-role="header">
+			<div data-role="header" data-position="fixed">
 				<a href="javascript:inicio()" data-icon="back">Atrás</a>
 				<h1>Búsqueda</h1>
 				<a href="javascript:inicio()" data-icon="home">Inicio</a>
@@ -52,12 +45,11 @@
 				<ul id="listSuggest" data-role="listview" data-inset="true"></ul>
 			</div>
 			
-		</div>
-		<!-- Página localizador -->
+		</div><!-- Página búsqueda -->
 
 		<!-- Página localizador -->
 		<div data-role="page" id="localizador">
-			<div data-role="header">
+			<div data-role="header" data-position="fixed">
 				<a href="javascript:inicio()" data-icon="back">Atrás</a>
 				<h1>Localizador</h1>
 				<a href="javascript:inicio()" data-icon="home">Inicio</a>
@@ -72,19 +64,11 @@
 					<a href="javascript:establecerLocalizacion()" class="ui-btn">Aceptar</a>
 				</div>
 			</div>
-			
-			<!-- 
-			<div data-role="footer" data-theme="a">
-				<h4>footer</h4>
-			</div>
-			 -->
-		</div>
-		<!-- Página localizador -->
-		
-		
+		</div><!-- Página localizador -->
+				
 		<!-- Página Categorías -->
 		<div data-role="page" id="categorias">
-			<div data-role="header">
+			<div data-role="header" data-position="fixed">
 				<a href="javascript:atras()" data-icon="back">Atrás</a>
 				<h1>Categorías</h1>
 				<a href="javascript:inicio()" data-icon="home">Inicio</a>
@@ -93,18 +77,8 @@
 			<div role="main" class="ui-content" id="contenidoCategorias">
 			
 			</div>
-	
-			<!-- 
-			<div data-role="footer" data-theme="a" data-position="fixed">
-				<div style="text-align:center">
-					 <a href="#" class="ui-btn">Ver mapa</a>
-				</div>
-			</div>
-			 -->
-		</div>
-		<!-- Página Categorías -->
-		
-		
+		</div><!-- Página Categorías -->
+				
 		<!-- Página datos -->
 		<div data-role="page" id="datos">
 			<div data-role="header" data-position="fixed">
@@ -113,15 +87,12 @@
 				<a href="javascript:inicio()" data-icon="home">Inicio</a>
 			</div>
 			<div role="main" class="ui-content">
-				
-				<ul id="listaDatos" data-role="listview" data-filter="true" data-filter-placeholder="Filtra resultados"></ul>
-
-				
+				<div class="listaFiltrada">
+					<ul id="listaDatos" data-role="listview" data-filter="true" data-filter-placeholder="Filtra resultados"></ul>
+				</div>
 			</div>
-		</div>
-		<!-- Página datos -->
-		
-		
+		</div><!-- Página datos -->
+			
 		<!-- Página mapa -->
 		<div data-role="page" id="mapa">
 			<div id="mapa-header" data-role="header" data-position="fixed" data-fullscreen="true">
@@ -133,16 +104,15 @@
 				<iframe id="mapea" style="position:absolute; width:100%; height:100%;border:none;">
 				</iframe>
 			</div>
-		</div>
-		<!-- Página mapa -->
+		</div><!-- Página mapa -->
 
      	
-        <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
 	<script type="text/javascript" src="js/config.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript">
-              	// </parametros de configuracion>	
-               	init();
-        </script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+      	// </parametros de configuracion>	
+       	init();
+    </script>
     </body>
 </html>

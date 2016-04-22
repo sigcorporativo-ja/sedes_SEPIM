@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
     	<widget xmlns   = "http://www.w3.org/ns/widgets"
 		xmlns:gap   = "http://phonegap.com/ns/1.0"
-		id          = "es.juntadeandalucia.mapea.sepim.app"
+		id          = "es.juntadeandalucia.mapea.sepim.sedes"
 		versionCode = "100" 
 		version     = "1.0.0" >
 
-	<name>Guía de Turismo</name>
+	<name>Sedes y Equipamientos</name>
 	<description>
-		Puntos de Interés
+		Sedes y Equipamientos de la Junta de Andalucía
 	</description>
 	<author email="sepim.ieca@juntadeandalucia.es" href="http://www.callejerodeandalucia.es/">
 		Junta de Andalucía

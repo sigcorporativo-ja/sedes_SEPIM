@@ -2,3 +2,13 @@
     white-space: normal !important;
     font-size: 14px !important; 
 }
+.listaFiltrada {
+    padding-top : 0.9em;
+}
+.listaFiltrada form {
+    position : fixed;
+    top      : 2.2em;
+    left     : 0;
+    width    : 100%;
+    z-index  : 1;
+}​

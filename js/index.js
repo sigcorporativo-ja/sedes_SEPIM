@@ -1,15 +1,3 @@
-//codigo para corregir un bug que tiene Jquery => https://github.com/jquery/jquery/pull/370/files
-//====================================================================================
-$(document).ready(function(){
-	jQuery.support = (function() {
-		marginDiv.style.marginRight = "0";
-		div.appendChild( marginDiv );
-		support.reliableMarginRight =
-		 ( parseInt( ( document.defaultView.getComputedStyle( marginDiv, null ) || { marginRight: 0 } ).marginRight, 10 ) || 0 ) === 0;
-	});
-});
-//====================================================================================
-
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
 	document.addEventListener("backbutton", onBackButton, false);
@@ -172,17 +160,23 @@ function cargarCategoria(cat){
 	    	 var i = 0;
 	    	 var length = categoriasList.length;
     		 for(i;i<length;i++){
-        		 if(!categoriasList[i].last){
-		    		 htmlElements.push("<li><a href='javascript:cargarCategoria(" + JSON.stringify(categoriasList[i]) + ")'>" +
-		    				 "<img width='80px' height:'80px' src='" + url+ "/categorias/" + categoriasList[i].id + "/logo/" + "'/>" +  
-		    				 categoriasList[i].name + 
-		    		 "</a></li>");
-		    	 }else{
-		    		 htmlElements.push("<li><a href='javascript:cargarDatos(" + JSON.stringify(categoriasList[i]) + ")'>" + 
-		    				 "<img width='80px' height:'80px' src='" + url+ "/categorias/" + categoriasList[i].id + "/logo/" + "'/>" +  
-		    				 categoriasList[i].name + 
-		    		 "</a></li>");
-		    	 }
+    		 	aniadir = cat!=null? true : 
+    		 						coor_x!=null? true: 
+    		 									categoriasList[i].name.toUpperCase().indexOf('EQUIPAMIENTO')<0;
+    		 	
+    		 	if (aniadir){
+	        		 if(!categoriasList[i].last){
+			    		 htmlElements.push("<li><a href='javascript:cargarCategoria(" + JSON.stringify(categoriasList[i]) + ")'>" +
+			    				 "<img width='80px' height:'80px' src='" + url+ "/categorias/" + categoriasList[i].id + "/logo/" + "'/>" +  
+			    				 categoriasList[i].name + 
+			    		 "</a></li>");
+			    	 }else{
+			    		 htmlElements.push("<li><a href='javascript:cargarDatos(" + JSON.stringify(categoriasList[i]) + ")'>" + 
+			    				 "<img width='80px' height:'80px' src='" + url+ "/categorias/" + categoriasList[i].id + "/logo/" + "'/>" +  
+			    				 categoriasList[i].name + 
+			    		 "</a></li>");
+			    	 }
+		    	}
     		 }
 	    	 htmlElements = "<ul id='listaCategorias' data-role='listview'>" + htmlElements.join(" ") + "</ul>";
 	    	 $("#contenidoCategorias").append(htmlElements);
@@ -491,6 +485,7 @@ function buscarGeobusquedas(query, callback){
         data: {
             q: query,
             wt: 'json',
+            rows: gbRows
         },
     	success: callback,
 	    error: function(){
@@ -506,7 +501,7 @@ function listarResultadosGB(result){
 		var htmlElements = [];
 		for(i=0;i<datosList.length;i++){
 			 var liHtml = "<li><a href='javascript:verDatoGB(" + JSON.stringify(datosList[i]) + ")'>";
-			 liHtml += datosList[i].nombre;
+			 liHtml += datosList[i].nombre_ext;
 			 liHtml += "</a></li>";
 			 htmlElements.push(liHtml);
 		 }
