@@ -1,3 +1,23 @@
+/** content a 100% height para que el mapa ocupe toda la pantalla */
+html,
+body,
+.ui-page {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.ui-page,
+.ui-page * {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.ui-page .ui-content {
+  height: inherit;
+}
+#mapa .ui-content{padding:0}
+/****/
 #listaDatos>li>a.ui-btn{
     white-space: normal !important;
     font-size: 14px !important; 
