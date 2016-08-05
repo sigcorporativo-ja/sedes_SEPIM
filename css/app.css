@@ -12,13 +12,16 @@ body,
      -moz-box-sizing: border-box;
           box-sizing: border-box;
 }
-
+.ui-header .ui-title,
+.ui-footer .ui-title {
+  margin: 0 5% !important;
+}
 .ui-page .ui-content {
   height: inherit;
 }
 #mapa .ui-content{padding:0}
 /****/
-#listaDatos>li>a.ui-btn{
+li>a.ui-btn{
     white-space: normal !important;
     font-size: 14px !important; 
 }

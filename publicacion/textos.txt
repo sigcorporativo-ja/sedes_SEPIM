@@ -1,11 +1,21 @@
 Título (30)
 ===========
+ISE Sedes-Equipamientos Junta
 
 Descripción breve (80)
 ======================
+Visualizador del Inventario de Sedes y Equipamientos de la Junta de Andalucía
+
 
 Descripción completa (4000)
 ===========================
+El Inventario de Sedes y Equipamientos de la Junta de Andalucía (ISE) permite la localización de las sedes y equipamientos de la Junta de Andalucía a través de un mapa interactivo.
+
+Incluye las sedes de las Consejerías, sus Delegaciones Provinciales, Archivos, Registros, Buzones y Entes dependientes, así como los organismos que constituyen la organización institucional de la Junta de Andalucía. En concreto, incluye la ubicación y demás datos de contacto de más de 400 organismos distribuidos en unos 225 establecimientos.
+
+De igual forma, incorpora la localización y datos de contacto de unos 16.000 equipamientos, entendiendo como tales al conjunto de edificaciones y/o espacios de uso público en los que la Junta de Andalucía presta uno o varios servicios públicos en un sentido amplio, como por ejemplo, bibliotecas, equipamientos sanitarios, educativos, de transporte, deportivos, turísticos, medioambientales, culturales, etc.
+
+Se trata de una aplicación en continua actualización y ampliación de sus contenidos, que incorpora los cambios organizativos de la Junta de Andalucía y que pretende abarcar todo tipo de equipamiento público en el que se presten servicios de la administración autonómica.
 
 Etiquetas	
 ===========
@@ -18,7 +28,14 @@ Versión inicial
 
 Sitio web
 =========
+http://www.juntadeandalucia.es/institutodeestadisticaycartografia/mapa_equipamientos/geolocalizacion.htm
 
 Correo electrónico
 ==================
+ise.produccion.ieca@juntadeandalucia.es
+
+Política de privacidad
+======================
+http://www.juntadeandalucia.es/institutodeestadisticaycartografia/ieagen/avisoLegal/index.htm
+
 

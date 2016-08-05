@@ -267,8 +267,6 @@ function verDato(idCategoria,dato){
     
   	var capaKML = new M.layer.KML(generarCapaKML(idCategoria,dato.pkValue));
 
-  	mapajs.getKML().length>0? mapajs.removeKML(mapajs.getKML()[0]) :null;
-  	
   	
   	mapajs.addKML(capaKML);
   	mapajs.setBbox(bbox);   	
@@ -367,6 +365,7 @@ function atrasMapa(){ //JGL - cambiado (hay 2 puntos de entrada a mapa)
 	}else{
 		inicio();
 	}
+	mapajs.getKML().length>0? mapajs.removeKML(mapajs.getKML()[0]) :null;
 }
 
 //JGL ==================================== Integración de GB y modificaciones ===============================================
