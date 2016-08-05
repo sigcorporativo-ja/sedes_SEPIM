@@ -109,6 +109,7 @@ function cargarCategoria(cat){
 	     cache: true,
 	     dataType: "json",
 	     success: function(categoriasList){
+	     	categoriasList.sort(sort_by('name', false));
 	    	 var htmlElements = [];
 	    	 var i = 0;
 	    	 var length = categoriasList.length;
@@ -175,6 +176,9 @@ function paginarDatos(cat){
 	     cache: true,
 	     dataType: "json",
 	     success: function(datosList){
+	     	if(requestParam.indexOf('x')<0){ //si no es "cerca de mí"
+		  		datosList.sort(sort_by('name',false, function(a){return a.toUpperCase()}));
+	       	}
 	    	 var i = 0;
 	    	 var length = datosList.length;
 	    	 if(length==0){
@@ -197,7 +201,8 @@ function paginarDatos(cat){
 			 var htmlElements = [];
 			 for(i;i<length;i++){
 				 var liHtml = "<li><a href='javascript:verDato("+ cat.id + "," + JSON.stringify(datosList[i]) + ")'>";
-				 liHtml += datosList[i].name;
+				 
+				 liHtml += "<div class='listaDistancia'>"+datosList[i].name+"</div>";
 				 if(showDistance && datosList[i].distance){
 					 var distance = datosList[i].distance;
 					 if(distance < 1000){
@@ -501,4 +506,17 @@ function verDatoGB(dato){
 		}).setZoom(10).addLabel(htmlTable);
 
   	$.mobile.changePage("#mapa");
+}
+
+var sort_by = function(field, reverse, primer){
+
+   var key = primer ? 
+       function(x) {return primer(x[field])} : 
+       function(x) {return x[field]};
+
+   reverse = !reverse ? 1 : -1;
+
+   return function (a, b) {
+       return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+     } 
 }
