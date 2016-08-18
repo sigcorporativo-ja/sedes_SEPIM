@@ -433,7 +433,12 @@ function listarResultadosGB(result){
 		var htmlElements = [];
 		for(i=0;i<datosList.length;i++){
 			 var liHtml = "<li><a href='javascript:verDatoGB(" + JSON.stringify(datosList[i]) + ")'>";
-			 liHtml += datosList[i].nombre_ext;
+			 if($.inArray("equipamiento",datosList[i].keywords)>-1){
+				liHtml += datosList[i].equipamiento;
+			 }else{
+			 	liHtml += datosList[i].organismo + " (" + datosList[i].municipio +")";
+			 }
+			 
 			 liHtml += "</a></li>";
 			 htmlElements.push(liHtml);
 		 }
@@ -485,26 +490,26 @@ function verDatoGB(dato){
 	 //JGL - no establezco todas las propiedades para eliminar los campos no deseados
     //f.setProperties(dato);																
 	f.properties ={};
-	htmlTable = "<table class=\"mapea-table\"><tbody>";
+	htmlTable = "<div class='result'>";
 	$.each(dato, function(k, v) {
 		if ($.inArray(k,attrNotShow)==-1){
 				f.properties[k] = v;
-				htmlTable += "<tr><td><b>";
+				htmlTable += "<table><tbody><tr><td class='key'>";
 		        htmlTable += k;
-		        htmlTable += "</b></td><td>";
+		        htmlTable += "</td><td class='value'>";
 		        htmlTable += v;
-		        htmlTable += "</td></tr>";
+		        htmlTable += "</td></tr></tbody></table>";
 		}
 
 	});
-	htmlTable += "</tbody></table>";
+	htmlTable += "</div>";
 
   	mapajs.setCenter({
 		  'x': coord[0],
 		  'y': coord[1],
 		  'draw': true  
 		}).setZoom(10).addLabel(htmlTable);
-
+  	$(".m-popup").removeClass("m-default").addClass("m-full");
   	$.mobile.changePage("#mapa");
 }
 
