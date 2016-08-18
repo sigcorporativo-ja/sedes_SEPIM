@@ -37,3 +37,6 @@ li>a.ui-btn{
     width    : 100%;
     z-index  : 1;
 }
+td.value{
+  white-space: normal!important;
+}

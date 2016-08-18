@@ -90,8 +90,6 @@ function establecerLocalizacion(){
 }
 
 function cargarCategoria(cat){
-	//console.log("cargarCategoria");
-	
 	var requestParam = "";
 	if(cat != null){
 		requestParam = "?id_categoria=" + cat.id;
@@ -107,18 +105,23 @@ function cargarCategoria(cat){
 		 url: url + "/categorias" + requestParam ,
 	     type: "GET",
 	     cache: true,
-	     dataType: "json",
-	     success: function(categoriasList){
+	     dataType: "json"
+	 }).done(function(categoriasList){
+	     	//cat==null->estamos en la primera categoría.
+	     	categoriasList = $.grep(categoriasList, function(value) {
+			  return (cat!=null? true : 
+	    		 	   value.coor_x!=null? true: 
+	    		 					/equipamiento/i.test(value.name));
+			});
 	     	categoriasList.sort(sort_by('name', false));
-	    	 var htmlElements = [];
-	    	 var i = 0;
-	    	 var length = categoriasList.length;
-    		 for(i;i<length;i++){
-    		 	aniadir = cat!=null? true : 
-    		 						coor_x!=null? true: 
-    		 									categoriasList[i].name.toUpperCase().indexOf('EQUIPAMIENTO')<0;
-    		 	
-    		 	if (aniadir){
+	    	
+	    	if (cat==null && categoriasList.length===1){
+	    	 	cargarCategoria(categoriasList[0]);
+	    	 	pilaCategorias = [];
+	    	 }else{
+	    	 	 htmlElements = [];
+	    		 for(i=0;i<categoriasList.length;i++){
+	    		 	
 	        		 if(!categoriasList[i].last){
 			    		 htmlElements.push("<li><a href='javascript:cargarCategoria(" + JSON.stringify(categoriasList[i]) + ")'>" +
 			    				 "<img width='80px' height:'80px' src='" + url+ "/categorias/" + categoriasList[i].id + "/logo/" + "'/>" +  
@@ -130,18 +133,18 @@ function cargarCategoria(cat){
 			    				 categoriasList[i].name + 
 			    		 "</a></li>");
 			    	 }
-		    	}
-    		 }
-	    	 htmlElements = "<ul id='listaCategorias' data-role='listview'>" + htmlElements.join(" ") + "</ul>";
-	    	 $("#contenidoCategorias").append(htmlElements);
-	    	 $("#listaCategorias").listview();
-	    	 loading(false);
-	     },
-	 	 error: function(){
-	 		 alert("Se ha producido un error al obtener las categorias");
-	 		 loading(false);
-	 	 }
-	   });
+	    		 }
+	    	 
+		    	 htmlElements = "<ul id='listaCategorias' data-role='listview'>" + htmlElements.join(" ") + "</ul>";
+		    	 $("#contenidoCategorias").append(htmlElements);
+		    	 $("#listaCategorias").listview();
+	    	}
+     }).fail(function(){
+ 		 alert("Se ha producido un error al obtener las categorias");
+ 	 }).always(function(){
+ 	 	loading(false);
+ 	 });
+	   
 }
 
 
