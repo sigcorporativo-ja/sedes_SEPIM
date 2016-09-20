@@ -110,7 +110,7 @@ function cargarCategoria(cat){
 	     	//cat==null->estamos en la primera categoría.
 	     	categoriasList = $.grep(categoriasList, function(value) {
 			  return (cat!=null? true : 
-	    		 	   value.coor_x!=null? true: 
+	    		 	   coor_x!=null? true: 
 	    		 					/equipamiento/i.test(value.name));
 			});
 	     	categoriasList.sort(sort_by('name', false));
