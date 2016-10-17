@@ -1,4 +1,6 @@
 var mapajs =null;
+var capaKML = null;
+var capaJSON = null;
 $(document).on("pagechange", function (e, data) {
   	  	if (($.type(data.toPage) == "object")	
   	  		&& (data.toPage[0].id=="mapa")) {
@@ -274,7 +276,7 @@ function verDato(idCategoria,dato){
 									'EPSG:4326', mapajs.getProjection().code);
   	
     
-  	var capaKML = new M.layer.KML(generarCapaKML(idCategoria,dato.pkValue));
+  	capaKML = new M.layer.KML(generarCapaKML(idCategoria,dato.pkValue));
 
   	
   	mapajs.addKML(capaKML);
@@ -375,6 +377,7 @@ function atrasMapa(){ //JGL - cambiado (hay 2 puntos de entrada a mapa)
 		inicio();
 	}
 	mapajs.getKML().length>0? mapajs.removeKML(mapajs.getKML()[0]) :null;
+	mapajs.get().length>0? mapajs.removeKML(mapajs.getKML()[0]) :null;
 }
 
 //JGL ==================================== Integración de GB y modificaciones ===============================================
