@@ -40,3 +40,9 @@ li>a.ui-btn{
 td.value{
   white-space: normal!important;
 }
+.m-popup-closer:after {
+    content: "\e915"!important;
+}
+.m-popup.m-collapsed .m-popup-closer:after {
+    content: "\e917"!important;
+}
