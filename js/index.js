@@ -276,13 +276,18 @@ function verDato(idCategoria,dato){
 									'EPSG:4326', mapajs.getProjection().code);
   	
     
-  	capaKML = new M.layer.KML(generarCapaKML(idCategoria,dato.pkValue));
-
+  	var capaKML = new M.layer.KML(generarCapaKML(idCategoria,dato.pkValue));
   	
   	mapajs.addKML(capaKML);
+  	capaKML.getImpl().getOL3Layer().getSource().on('addfeature', function(e) {
+  			f=e.feature.clone(); //clono para no modificar la etiqueta
+  			f.set('name', 'Información');
+  			capaKML.getImpl().selectFeatures([f]);
+  		});
+
+
   	mapajs.setBbox(bbox);   	
-  	$.mobile.changePage("#mapa");
-  	  	
+  	$.mobile.changePage("#mapa");  	  	
 }
 
 //genera sintaxis para crear una capa KML en mapea
