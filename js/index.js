@@ -468,52 +468,48 @@ function clearSuggest(){
 }
 
 function verDatoGB(dato){
-
-	/*
-		wkt = new ol.format.WKT();
-		geom = wkt.readFeature(dato.geom,{
-											featureProjection:"EPSG:25830"
-										 }).getGeometry();
-		point = null;
-		if (geom.getType() != 'Point'){
-			point = ol.extent.getCenter(geom.getExtent());
-		}else{
-			point = geom;
-		}
-		console.log(point);
-		//if(srcMapeaObjeto.projection != "EPSG:25830"){
-			//point.transform("EPSG:25830", srcMapeaObjeto.projection);
-			//console.log(point);
-		//}		
-		
-	*/
-	
-	f =  new ol.format.WKT().readFeature(dato.geom);
+			
+	let f =  new ol.format.WKT().readFeature(dato.geom);
+	delete dato.geom;
 	f.setId(dato.solrid);
-	coord = f.getGeometry().getCoordinates()[0]; //sé que es punto;
-	 //JGL - no establezco todas las propiedades para eliminar los campos no deseados
-    //f.setProperties(dato);																
-	f.properties ={};
-	htmlTable = "<div class='result'>";
-	$.each(dato, function(k, v) {
-		if ($.inArray(k,attrNotShow)==-1){
-				f.properties[k] = v;
-				htmlTable += "<table><tbody><tr><td class='key'>";
-		        htmlTable += k;
-		        htmlTable += "</td><td class='value'>";
-		        htmlTable += v;
-		        htmlTable += "</td></tr></tbody></table>";
-		}
+	delete dato.solrid;
+	f.setProperties(dato);
+	let bbox = f.getGeometry().getExtent();
+	let point = ol.extent.getCenter(bbox); //vale para todo tipo de geometrías			
+	
+	capaJSON = new M.layer.GeoJSON({
+    	name: "Información",
+    	source: new ol.format.GeoJSON().writeFeatureObject(f)},
+    	{hide: attrNotShow});
+	
+	mapajs.addLayers(capaJSON);
 
-	});
-	htmlTable += "</div>";
+	capaJSON.getImpl().getOL3Layer().setStyle(new ol.style.Style({
+	  image: new ol.style.Icon({
+	     src: '../lib/mapea/assets/img/m-pin-24-sel.svg'
+	  }),
+	  text: new ol.style.Text({
+	          text: f.get('organismo'),
+	          font: 'bold 13px Helvetica, sans-serif',
+	          offsetY: -20,
+	          scale: 1,
+	          fill: new ol.style.Fill({
+	          	color: 'white'
+	          }),
+	          stroke: new ol.style.Stroke({
+	            color: 'black',
+	            width: 1.2
+	          })
+	    })
+	}));
+	capaJSON.getImpl().selectFeatures([f],ol.extent.getCenter(f.getGeometry().getExtent()));
 
-  	mapajs.setCenter({
-		  'x': coord[0],
-		  'y': coord[1],
-		  'draw': true  
-		}).setZoom(10).addLabel(htmlTable);
-  	$(".m-popup").removeClass("m-default").addClass("m-full");
+	
+	mapajs.setBbox(bbox);
+  	/*mapajs.setCenter({
+		  'x': point[0],
+		  'y': point[1],
+		  'draw': false}).setZoom(15);  */
   	$.mobile.changePage("#mapa");
 }
 

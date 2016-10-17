@@ -46,3 +46,6 @@ td.value{
 .m-popup.m-collapsed .m-popup-closer:after {
     content: "\e917"!important;
 }
+.m-popup>div.m-content {
+    text-align: left!important;
+}
