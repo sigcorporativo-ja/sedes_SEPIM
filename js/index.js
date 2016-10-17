@@ -58,7 +58,6 @@ function obtenerUrlComoObjeto(url){
 	return urlObjeto;
 }
 
-// controladores
 function loading(showLoading){
 	if(showLoading){
 		$.mobile.loading( "show",{});
@@ -68,7 +67,6 @@ function loading(showLoading){
 }
 
 function geolocalizar(){
-	//console.log("geolocalizar");
 	if (navigator.geolocation) {
 		  var successFunction = function(position){
 			  coor_x = position.coords.longitude;
@@ -86,18 +84,6 @@ function geolocalizar(){
 		} else {
 		  alert("El navegador utilizado no soporta la geolocalización");
 		}
-}
-
-function establecerLocalizacion(){
-	var entidad = $("#municipios").val();
-	if(entidad==""){
-		alert("Ha de seleccionar las provincias y los municipios");
-		return;
-	}
-	idEntidad = entidad;
-	coor_x = null;
-	coor_y = null;
-	cargarCategoria();
 }
 
 function cargarCategoria(cat){
@@ -260,32 +246,13 @@ function paginarDatos(cat){
 	  });
 }
 
-
-//function getTablaDatos(fields){
-//	var html = "";
-//	var i=0;
-//	var length = fields.length;
-//	for(i=0;i<length;i++){
-//		html += "<li><b>" + fields[i].field +"</b>: " + fields[i].value + "<li>";
-//	}
-//	if(html!=""){
-//		html = "<ul>" + html + "</ul>";
-//	}else{
-//		html = "No hay ningún elemento a mostrar";
-//	}
-//	
-//	return html;
-//}
-
-//OJO: todo esto necesita tener mapea en el mismo servidor => CROSS DOMAIN
-popup = null;
 function verDato(idCategoria,dato){
 	
   	bbox = ol.proj.transformExtent([dato.minX,dato.minY,dato.maxX,dato.maxY], 
 									'EPSG:4326', mapajs.getProjection().code);
   	
     
-  	var capaKML = new M.layer.KML(generarCapaKML(idCategoria,dato.pkValue));
+  	capaKML = new M.layer.KML(generarCapaKML(idCategoria,dato.pkValue));
   	
   	mapajs.addKML(capaKML);
   	capaKML.getImpl().getOL3Layer().getSource().on('addfeature', function(e) {
@@ -361,15 +328,16 @@ function inicio(){
 	coor_y = null;
 	idEntidad = aplicacion.idEntidad;
 	datos.offset = 0;
-//JGL
 	$("#listaDatos").empty(); 
 	clearSuggest();
-//
 	$.mobile.changePage("#inicio");
+	capaKML!=null && mapajs.removeLayers(capaKML);
+	//capaJSON!=null && mapajs.removeLayers(capaJSON); //no funciona
+	capaJSON!=null && capaJSON.getImpl().destroy();
+	capaJSON = null; capaKML= null;
 }
 
 function atras(){
-	//console.log("atras");
 	if(pilaCategorias.length==0){
 		if ($("#txtBusqueda").val().length>0){
 			$.mobile.changePage("#busqueda");
@@ -390,9 +358,13 @@ function atrasMapa(){ //JGL - cambiado (hay 2 puntos de entrada a mapa)
 	}else{
 		inicio();
 	}
-	mapajs.getKML().length>0? mapajs.removeKML(mapajs.getKML()[0]) :null;
-	mapajs.get().length>0? mapajs.removeKML(mapajs.getKML()[0]) :null;
+	capaKML!=null && mapajs.removeLayers(capaKML);
+	console.log(capaKML);
+	//capaJSON!=null && mapajs.removeLayers(capaJSON); //no funciona
+	capaJSON!=null && capaJSON.getImpl().destroy();
+	capaJSON = null;capaKML= null;
 }
+
 
 //JGL ==================================== Integración de GB y modificaciones ===============================================
 $(document).on("pageinit", "#busqueda", function() {
@@ -430,6 +402,7 @@ $(document).on("pageinit", "#busqueda", function() {
 });
 
 function buscarGeobusquedas(query, callback){
+	$("#titleDatos").html(query);
 	loading(true);
 	$.ajax({
         url: urlGB + "/search_mobi",
