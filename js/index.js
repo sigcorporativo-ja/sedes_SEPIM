@@ -21,7 +21,16 @@ function onDeviceReady() {
 	document.addEventListener("backbutton", onBackButton, false);
 }
 function onBackButton(){
-	navigator.app.exitApp();
+	switch($.mobile.pageContainer.pagecontainer('getActivePage').attr('id')) {
+	    case 'inicio':
+	        navigator.app.exitApp();
+	        break;
+	    case 'mapa':
+	        atrasMapa();
+	        break;
+	    default:
+	        atras();
+	}
 }
 
 function obtenerUrlComoObjeto(url){
