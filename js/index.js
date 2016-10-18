@@ -314,8 +314,8 @@ function inicio(){
 }
 
 function atras(actualPage){
-	if(actualPage!="busqueda" && pilaCategorias.length==0){
-		if ($("#txtBusqueda").val().length>0){
+	if(pilaCategorias.length==0){
+		if (actualPage!="busqueda" && $("#txtBusqueda").val().length>0){
 			$.mobile.changePage("#busqueda");
 		}else{
 			inicio();
