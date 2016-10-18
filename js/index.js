@@ -21,15 +21,16 @@ function onDeviceReady() {
 	document.addEventListener("backbutton", onBackButton, false);
 }
 function onBackButton(){
-	switch($.mobile.pageContainer.pagecontainer('getActivePage').attr('id')) {
+	let page = $.mobile.pageContainer.pagecontainer('getActivePage').attr('id');
+	switch(page) {
 	    case 'inicio':
 	        navigator.app.exitApp();
 	        break;
 	    case 'mapa':
-	        atrasMapa();
+	        atrasMapa(page);
 	        break;
 	    default:
-	        atras();
+	        atras(page);
 	}
 }
 
@@ -312,8 +313,8 @@ function inicio(){
 	capaJSON = null; capaKML= null;
 }
 
-function atras(){
-	if(pilaCategorias.length==0){
+function atras(actualPage){
+	if(actualPage!="busqueda" && pilaCategorias.length==0){
 		if ($("#txtBusqueda").val().length>0){
 			$.mobile.changePage("#busqueda");
 		}else{
@@ -325,7 +326,7 @@ function atras(){
 		cargarCategoria(categoria);
 	}
 }
-function atrasMapa(){ //JGL - cambiado (hay 2 puntos de entrada a mapa)
+function atrasMapa(actualPage){ //JGL - cambiado (hay 2 puntos de entrada a mapa)
 	if ($("#listaDatos li").length>0){
 		$.mobile.changePage("#datos");
 	}else if ($("#listSuggest li").length>0){
