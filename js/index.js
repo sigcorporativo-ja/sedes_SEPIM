@@ -334,7 +334,6 @@ function atrasMapa(){ //JGL - cambiado (hay 2 puntos de entrada a mapa)
 		inicio();
 	}
 	capaKML!=null && mapajs.removeLayers(capaKML);
-	console.log(capaKML);
 	//capaJSON!=null && mapajs.removeLayers(capaJSON); //no funciona
 	capaJSON!=null && capaJSON.getImpl().destroy();
 	capaJSON = null;capaKML= null;
@@ -451,7 +450,7 @@ function verDatoGB(dato){
 
 	capaJSON.getImpl().getOL3Layer().setStyle(new ol.style.Style({
 	  image: new ol.style.Icon({
-	     src: '../lib/mapea/assets/img/m-pin-24-sel.svg'
+	     src: 'lib/mapea/assets/img/m-pin-24-sel.svg'
 	  }),
 	  text: new ol.style.Text({
 	          text: f.get('organismo'),
