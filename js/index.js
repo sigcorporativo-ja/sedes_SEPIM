@@ -33,31 +33,6 @@ function onBackButton(){
 	}
 }
 
-function obtenerUrlComoObjeto(url){
-	var urlObjeto = {};
-	separadorUrlParametrosIndex = url.indexOf("?");
-	
-	urlObjeto.url = url.substr(0, separadorUrlParametrosIndex);
-	urlObjeto.parametros = {};
-	var parametrosUrl = url.substr(separadorUrlParametrosIndex+1).split("&");
-	var i = 0;
-	for(i=0;i<parametrosUrl.length;i++){
-		var parametro = parametrosUrl[i].split("=");
-		if(parametro[0].toLowerCase()=="projection"){
-			var projection = parametro[1].split("*");
-			if(projection[0].toLowerCase().indexOf("EPSG")){
-				urlObjeto.projection = projection[0];
-			}else{
-				urlObjeto.projection = projection[1];
-			}
-		}
-		urlObjeto.parametros[parametro[0]]= parametro[1];
-	}
-	ORIGINAL_LAYERS = urlObjeto.parametros.layers;
-	
-	return urlObjeto;
-}
-
 function loading(showLoading){
 	if(showLoading){
 		$.mobile.loading( "show",{});
