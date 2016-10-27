@@ -378,6 +378,7 @@ $(document).on("pageinit", "#busqueda", function() {
 
 function buscarGeobusquedas(query, callback){
 	$("#titleDatos").html(query);
+	
 	loading(true);
 	$.ajax({
         url: urlGB + "/search_mobi",
@@ -397,6 +398,7 @@ function buscarGeobusquedas(query, callback){
 }
 
 function listarResultadosGB(result){
+	$("#titleDatos").append(" ("+result.response.numFound+")");
 	datosList = result.response.docs;
 	if (datosList!=null){
 		var htmlElements = [];
