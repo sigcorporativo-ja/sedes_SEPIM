@@ -31,7 +31,7 @@
     <plugin name="cordova-plugin-geolocation" source="npm" version="2.1.0" />
     <plugin name="cordova-plugin-inappbrowser" source="npm" version="1.3.0" />
     <plugin name="cordova-plugin-splashscreen" source="npm" version="3.2.1" />
-    <plugin name="cordova-plugin-dialogs" source="npm" version="2.1.3" />
+    <plugin name="cordova-plugin-dialogs" source="npm" version="1.3.0" />
     <plugin name="cordova-plugin-statusbar" source="npm" version="2.1.2" />
         <gap:config-file platform="ios" parent="UIStatusBarHidden" mode="add">
             <true/>
