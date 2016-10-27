@@ -2,7 +2,7 @@ var mapajs =null;
 var capaKML = null;
 var capaJSON = null;
 $(document).on("pagechange", function (e, data) {
-  	  	if (($.type(data.toPage) == "object")	
+  	  	if (($.type(data.toPage) == "object")
   	  		&& (data.toPage[0].id=="mapa")) {
   	  			bbox = mapajs.getBbox()
 	  			mapajs.getMapImpl().updateSize();
@@ -67,7 +67,7 @@ function cargarCategoria(cat){
 	if(cat != null){
 		requestParam = "?id_categoria=" + cat.id;
 		pilaCategorias.push(cat);
-	
+
 	}else{
 		requestParam = "?id_aplicacion=" + aplicacion.id;
 	}
@@ -82,33 +82,33 @@ function cargarCategoria(cat){
 	 }).done(function(categoriasList){
 	     	//cat==null->estamos en la primera categoría.
 	     	categoriasList = $.grep(categoriasList, function(value) {
-			  return (cat!=null? true : 
+			  return (cat!=null? true :
 	    		 	   coor_x!=null? true: //entrada por "Cerca de mí"
 	    		 					!(/equipamiento/i).test(value.name));
 			});
 	     	categoriasList.sort(sort_by('name', false));
-	     	
-	    	
+
+
 	    	if (cat==null && categoriasList.length===1){
 	    	 	cargarCategoria(categoriasList[0]);
 	    	 	pilaCategorias = [];
 	    	 }else{
 	    	 	 htmlElements = [];
 	    		 for(i=0;i<categoriasList.length;i++){
-	    		 	
+
 	        		 if(!categoriasList[i].last){
 			    		 htmlElements.push("<li><a href='javascript:cargarCategoria(" + JSON.stringify(categoriasList[i]) + ")'>" +
-			    				 "<img width='80px' height:'80px' src='" + url+ "/categorias/" + categoriasList[i].id + "/logo/" + "'/>" +  
-			    				 categoriasList[i].name + 
+			    				 "<img width='80px' height:'80px' src='" + url+ "/categorias/" + categoriasList[i].id + "/logo/" + "'/>" +
+			    				 categoriasList[i].name +
 			    		 "</a></li>");
 			    	 }else{
-			    		 htmlElements.push("<li><a href='javascript:cargarDatos(" + JSON.stringify(categoriasList[i]) + ")'>" + 
-			    				 "<img width='80px' height:'80px' src='" + url+ "/categorias/" + categoriasList[i].id + "/logo/" + "'/>" +  
-			    				 categoriasList[i].name + 
+			    		 htmlElements.push("<li><a href='javascript:cargarDatos(" + JSON.stringify(categoriasList[i]) + ")'>" +
+			    				 "<img width='80px' height:'80px' src='" + url+ "/categorias/" + categoriasList[i].id + "/logo/" + "'/>" +
+			    				 categoriasList[i].name +
 			    		 "</a></li>");
 			    	 }
 	    		 }
-	    	 
+
 		    	 htmlElements = "<ul id='listaCategorias' data-role='listview'>" + htmlElements.join(" ") + "</ul>";
 		    	 $("#contenidoCategorias").append(htmlElements);
 		    	 $("#listaCategorias").listview();
@@ -118,7 +118,7 @@ function cargarCategoria(cat){
  	 }).always(function(){
  	 	loading(false);
  	 });
-	   
+
 }
 
 
@@ -141,11 +141,11 @@ function paginarDatos(cat){
 	}else{
 		showDistance = true;
 		requestParam += "?x=" + coor_x + "&y=" + coor_y;
-	}	
+	}
 	if (datos.limit!=-1){
 		requestParam += "&limit=" + datos.limit + "&offset=" + datos.offset;
 	}
-//JGL12022015	
+//JGL12022015
 	loading(true);
 	$.ajax({
 		 url: url + "/datos/"+ cat.id + requestParam ,
@@ -167,18 +167,18 @@ function paginarDatos(cat){
 	    			 alert("Ya no hay mas datos para este filtro");
 	    		 }
 	    	 }
-	    	 
+
 	    	 //eliminamos el botón de cargando
 	    	 if(datos.offset!=0){
 	    		 $("#listaDatos li").last().remove();
     			 //$("#listaDatos li").last().css("height");
     			 //$("#listaDatos li").last().css("height","20px");
 	    	 }
-	    	 
+
 			 var htmlElements = [];
 			 for(i;i<length;i++){
 				 var liHtml = "<li><a href='javascript:verDato("+ cat.id + "," + JSON.stringify(datosList[i]) + ")'>";
-				 
+
 				 liHtml += "<div class='listaDistancia'>"+datosList[i].name+"</div>";
 				 if(showDistance && datosList[i].distance){
 					 var distance = datosList[i].distance;
@@ -189,7 +189,7 @@ function paginarDatos(cat){
 						 distance = distance/1000;
 						 //redondeamos con 1 decimal
 						 distance = Math.round(distance * 10) / 10;
-						 distance += " km"; 
+						 distance += " km";
 					 }
 					 liHtml += "<span class='ui-li-count'>" + distance + "</span>";
 				 }
@@ -201,7 +201,7 @@ function paginarDatos(cat){
 			}
 		 $("#listaDatos").append(htmlElements);
 	    	 $("#listaDatos").listview("refresh");
-	    	 
+
 		if (datos.limit!=-1){//JGL
 		    	 //estilos para el obtener mas datos
 		    	 var botonObtenerMasDatos =  $($("#listaDatos li a").last()[0]);
@@ -210,8 +210,8 @@ function paginarDatos(cat){
 		    	 botonObtenerMasDatos.css("color","#aaa");
 		    	 botonObtenerMasDatos.css("text-align","center");
 		}
-	    	 
-	    	 
+
+
 	    	 datos.offset += datos.limit;
 	    	 loading(false);
 	     },
@@ -223,13 +223,13 @@ function paginarDatos(cat){
 }
 
 function verDato(idCategoria,dato){
-	
-  	bbox = ol.proj.transformExtent([dato.minX,dato.minY,dato.maxX,dato.maxY], 
+
+  	bbox = ol.proj.transformExtent([dato.minX,dato.minY,dato.maxX,dato.maxY],
 									'EPSG:4326', mapajs.getProjection().code);
-  	
-    
+
+
   	capaKML = new M.layer.KML(generarCapaKML(idCategoria,dato.pkValue));
-  	
+
   	mapajs.addKML(capaKML);
   	capaKML.getImpl().getOL3Layer().getSource().on('addfeature', function(e) {
   			f=e.feature.clone(); //clono para no modificar la etiqueta
@@ -238,8 +238,8 @@ function verDato(idCategoria,dato){
   		});
 
 
-  	mapajs.setBbox(bbox);   	
-  	$.mobile.changePage("#mapa");  	  	
+  	mapajs.setBbox(bbox);
+  	$.mobile.changePage("#mapa");
 }
 
 //genera sintaxis para crear una capa KML en mapea
@@ -275,14 +275,19 @@ function init(){
 				container:"map",
 				wmcfile: searchParam(aplicacion.wmcURL,'wmcfile')
 			 });
-			 
+
 	    	 //$.mobile.changePage("#inicio");
-			navigator.splashscreen.hide();
+			   navigator.splashscreen.hide();
 	     },
 	     error: function(){
-	 		 alert("Se ha producido un error al obtener la aplicación con el id: " + idAplicacion);
+         navigator.notification.alert("Se ha producido un error al obtener la aplicación con el id: "
+                                        + idAplicacion, errorExit, "Error", "Salir")
 	 	 }
 	 });
+}
+
+function errorExit(){
+  navigator.app.exitApp();
 }
 
 function searchParam(stringURL, param){
@@ -304,7 +309,7 @@ function inicio(){
 	coor_y = null;
 	idEntidad = aplicacion.idEntidad;
 	datos.offset = 0;
-	$("#listaDatos").empty(); 
+	$("#listaDatos").empty();
 	clearSuggest();
 	$.mobile.changePage("#inicio");
 	capaKML!=null && mapajs.removeLayers(capaKML);
@@ -378,7 +383,7 @@ $(document).on("pageinit", "#busqueda", function() {
 
 function buscarGeobusquedas(query, callback){
 	$("#titleDatos").html(query);
-	
+
 	loading(true);
 	$.ajax({
         url: urlGB + "/search_mobi",
@@ -394,7 +399,7 @@ function buscarGeobusquedas(query, callback){
 	 		 alert("Se ha producido un error al realizar la búsqueda");
 	 	},
 	 	final: function(){loading(false)}
-    });    
+    });
 }
 
 function listarResultadosGB(result){
@@ -409,46 +414,46 @@ function listarResultadosGB(result){
 			 }else{
 			 	liHtml += datosList[i].organismo + " (" + datosList[i].municipio +")";
 			 }
-			 
+
 			 liHtml += "</a></li>";
 			 htmlElements.push(liHtml);
 		 }
-		
+
 		 $.mobile.changePage("#datos");
 		 $("#listaDatos").html(htmlElements).listview("refresh");
-		 
+
 	}
 }
-	
+
 function directResultGB(result){
 	datosList = result.response.docs;
 	if (datosList!=null && datosList.length>0){
-		$("#listaDatos").empty(); 
+		$("#listaDatos").empty();
 		verDatoGB(datosList[0]);
-		
+
 	}
 }
 
 function clearSuggest(){
-	$('#listSuggest').empty(); 
+	$('#listSuggest').empty();
 	$('#txtBusqueda').val('');
 }
 
 function verDatoGB(dato){
-			
+
 	let f =  new ol.format.WKT().readFeature(dato.geom);
 	delete dato.geom;
 	f.setId(dato.solrid);
 	delete dato.solrid;
 	f.setProperties(dato);
 	let bbox = f.getGeometry().getExtent();
-	let point = ol.extent.getCenter(bbox); //vale para todo tipo de geometrías			
-	
+	let point = ol.extent.getCenter(bbox); //vale para todo tipo de geometrías
+
 	capaJSON = new M.layer.GeoJSON({
     	name: "Información",
     	source: new ol.format.GeoJSON().writeFeatureObject(f)},
     	{hide: attrNotShow});
-	
+
 	mapajs.addLayers(capaJSON);
 
 	capaJSON.getImpl().getOL3Layer().setStyle(new ol.style.Style({
@@ -471,7 +476,7 @@ function verDatoGB(dato){
 	}));
 	capaJSON.getImpl().selectFeatures([f],ol.extent.getCenter(f.getGeometry().getExtent()));
 
-	
+
 	mapajs.setBbox(bbox);
   	/*mapajs.setCenter({
 		  'x': point[0],
@@ -482,13 +487,13 @@ function verDatoGB(dato){
 
 var sort_by = function(field, reverse, primer){
 
-   var key = primer ? 
-       function(x) {return primer(x[field])} : 
+   var key = primer ?
+       function(x) {return primer(x[field])} :
        function(x) {return x[field]};
 
    reverse = !reverse ? 1 : -1;
 
    return function (a, b) {
        return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
-     } 
+     }
 }
