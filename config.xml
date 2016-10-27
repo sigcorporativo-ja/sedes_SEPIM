@@ -16,11 +16,6 @@
 	<access origin="*" />
 	<icon src="resources/icon.png" /><!--Adaptar a resoluciones?-->
 
-	<preference name="SplashScreen" value="screen" />
-	<preference name="SplashScreenDelay" value="10000" />
-	<preference name="AutoHideSplashScreen" value="false" />
-	<preference name="fullscreen" value="false" />
-	<preference name="phonegap-version" value="cli-6.3.0" />
 
 <!-- PERMISOS -->
 	<preference name="permissions" value="none"/>
@@ -48,7 +43,7 @@
     <preference name="FadeSplashScreen" value="false"/>
     <preference name="DisallowOverscroll" value="true" />
     <preference name="SuppressesLongPressGesture" value="true" />
-    <preference name="phonegap-version" value="cli-5.2.0" />
+    <preference name="phonegap-version" value="cli-6.3.0" />
 
 <!-- CONFIGURACIONES ESPECÍFIAS, ICONOS Y SPLASH -->
     <!-- al estar todos definidos, el icono y el splash por defecto no se usan, pero son
