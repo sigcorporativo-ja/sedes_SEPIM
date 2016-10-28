@@ -21,7 +21,7 @@ function onDeviceReady() {
 	document.addEventListener("backbutton", onBackButton, false);
 }
 function onBackButton(){
-	let page = $.mobile.pageContainer.pagecontainer('getActivePage').attr('id');
+	page = $.mobile.pageContainer.pagecontainer('getActivePage').attr('id');
 	switch(page) {
 	    case 'inicio':
 	        navigator.app.exitApp();
@@ -441,13 +441,13 @@ function clearSuggest(){
 
 function verDatoGB(dato){
 
-	let f =  new ol.format.WKT().readFeature(dato.geom);
+	f =  new ol.format.WKT().readFeature(dato.geom);
 	delete dato.geom;
 	f.setId(dato.solrid);
 	delete dato.solrid;
 	f.setProperties(dato);
-	let bbox = f.getGeometry().getExtent();
-	let point = ol.extent.getCenter(bbox); //vale para todo tipo de geometrías
+	bbox = f.getGeometry().getExtent();
+	point = ol.extent.getCenter(bbox); //vale para todo tipo de geometrías
 
 	capaJSON = new M.layer.GeoJSON({
     	name: "Información",
