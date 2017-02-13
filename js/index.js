@@ -111,7 +111,7 @@ function cargarCategoria(cat){
 		    	 htmlElements = "<ul id='listaCategorias' data-role='listview'>" + htmlElements.join(" ") + "</ul>";
 		    	 $("#contenidoCategorias").append(htmlElements);
 		    	 $("#listaCategorias").listview();
-           $("#titleCategorias").html(cat.name);
+           $("#titleCategorias").html(cat == null ? "Categorías" : cat.name);
 	    	}
      }).fail(function(){
  		 alert("Se ha producido un error al obtener las categorias");
