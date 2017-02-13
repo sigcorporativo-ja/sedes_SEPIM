@@ -67,7 +67,6 @@ function cargarCategoria(cat){
 	if(cat != null){
 		requestParam = "?id_categoria=" + cat.id;
 		pilaCategorias.push(cat);
-
 	}else{
 		requestParam = "?id_aplicacion=" + aplicacion.id;
 	}
@@ -112,6 +111,7 @@ function cargarCategoria(cat){
 		    	 htmlElements = "<ul id='listaCategorias' data-role='listview'>" + htmlElements.join(" ") + "</ul>";
 		    	 $("#contenidoCategorias").append(htmlElements);
 		    	 $("#listaCategorias").listview();
+           $("#titleCategorias").html(cat.name);
 	    	}
      }).fail(function(){
  		 alert("Se ha producido un error al obtener las categorias");
@@ -126,6 +126,7 @@ function cargarDatos(cat){
 	//console.log(cat);
 	pilaCategorias.push(cat);
 	datos.offset = 0;
+
     $("#titleDatos").html(cat.name);
 	$("#listaDatos").html("");
 	$.mobile.changePage("#datos");

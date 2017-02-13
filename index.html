@@ -19,17 +19,17 @@
   	  $.mobile.pushStateEnabled = false;
 	  });
   </script>
-  <script src="lib/jquery/jquery.mobile-1.4.5.min.js"></script>   
+  <script src="lib/jquery/jquery.mobile-1.4.5.min.js"></script>
   <script src="lib/mapea/js/mapea.ol3.min.js"></script>
-   
+
   <script src="lib/browser-polyfill.js" type="text/javascript"></script>
   <script src="lib/mapea/js/configuration.js "></script>
-  
+
   <script src="js/index.js"></script>
   <script src="js/config.js"></script>
-		
+
         <title>SEPIM</title>
-                
+
     </head>
     <body>
     	<!-- Página principal -->
@@ -37,15 +37,15 @@
 			<div data-role="header" data-position="fixed">
 				<h1 id="app-name">Inicio</h1>
 			</div>
-	
+
 			<div role="main" class="ui-content">
 				<a class="ui-btn ui-shadow ui-corner-all ui-btn-b" data-direction="reverse" href="javascript:geolocalizar()">Cerca de mi</a>
 				<a id ="btn-gb" class="ui-btn ui-shadow ui-corner-all ui-btn-b" style="display: none" data-direction="reverse" href="#busqueda">Búsqueda por nombre</a>
-				<a id="btn-buscar" class="ui-btn ui-shadow ui-corner-all ui-btn-b" data-direction="reverse" href="javascript:cargarCategoria()">Búsqueda por Estructura Orgánica</a>			
-				
-			</div>			
+				<a id="btn-buscar" class="ui-btn ui-shadow ui-corner-all ui-btn-b" data-direction="reverse" href="javascript:cargarCategoria()">Búsqueda por Estructura Orgánica</a>
+
+			</div>
 		</div><!-- Página principal -->
-		
+
 		<!-- Página búsqueda -->
 		<div data-role="page" id="busqueda">
 			<div data-role="header" data-position="fixed">
@@ -53,13 +53,13 @@
 				<h1>Búsqueda</h1>
 				<a href="javascript:inicio()" data-icon="home">Inicio</a>
 			</div>
-			
+
 			<div role="main" class="ui-content">
 				<input id="txtBusqueda" type="search">
-				<a class="ui-btn ui-shadow ui-corner-all ui-btn-b" href="javascript:buscarGeobusquedas($('#txtBusqueda').val(),listarResultadosGB)">Buscar</a>			    
+				<a class="ui-btn ui-shadow ui-corner-all ui-btn-b" href="javascript:buscarGeobusquedas($('#txtBusqueda').val(),listarResultadosGB)">Buscar</a>
 				<ul id="listSuggest" data-role="listview" data-inset="true"></ul>
 			</div>
-			
+
 		</div><!-- Página búsqueda -->
 
 		<!-- Página localizador -->
@@ -69,7 +69,7 @@
 				<h1>Localizador</h1>
 				<a href="javascript:inicio()" data-icon="home">Inicio</a>
 			</div>
-			
+
 			<div role="main" class="ui-content">
 				<div class="ui-field-contain">
 				    <select name="provincias" id="provincias" onchange="cargarMunicipios()">
@@ -80,20 +80,20 @@
 				</div>
 			</div>
 		</div><!-- Página localizador -->
-				
+
 		<!-- Página Categorías -->
 		<div data-role="page" id="categorias">
 			<div data-role="header" data-position="fixed">
 				<a href="javascript:atras()" data-icon="back">Atrás</a>
-				<h1>Categorías</h1>
+				<h1 id="titleCategorias">Categorías</h1>
 				<a href="javascript:inicio()" data-icon="home">Inicio</a>
 			</div>
-	
+
 			<div role="main" class="ui-content" id="contenidoCategorias">
-			
+
 			</div>
 		</div><!-- Página Categorías -->
-				
+
 		<!-- Página datos -->
 		<div data-role="page" id="datos">
 			<div data-role="header" data-position="fixed">
@@ -107,7 +107,7 @@
 				</div>
 			</div>
 		</div><!-- Página datos -->
-			
+
 		<!-- Página mapa -->
 		<div data-role="page" id="mapa">
 			<div id="mapa-header" data-role="header" data-position="fixed">
@@ -120,7 +120,7 @@
 			</div>
 		</div><!-- Página mapa -->
     <script type="text/javascript">
-      	// </parametros de configuracion>	
+      	// </parametros de configuracion>
        	init();
     </script>
     </body>
