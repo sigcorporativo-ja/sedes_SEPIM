@@ -15,11 +15,7 @@
 	<content src="index.html" />
 	<access origin="*" />
     <preference name="android-minSdkVersion" value="16"/>
-    <preference name="SuppressesIncrementalRendering" value="true"/>    
-    <!--
-    <preference name="webviewbounce" value="true"/>
-    <preference name="DisallowOverscroll" value="false"/>
-    <preference name="StatusBarOverlaysWebView" value="false" />-->
+    <preference name="SuppressesIncrementalRendering" value="true"/>    <!-- aumenta rendimiento en iOS -->
     <feature name="StatusBar">
         <param name="ios-package" value="CDVStatusBar" onload="true"/>
     </feature>

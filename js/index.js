@@ -17,9 +17,14 @@ $(document).ready(function() {
         onDeviceReady();
     }
 });
+
 function onDeviceReady() {
 	document.addEventListener("backbutton", onBackButton, false);
+  getApp().always(function(){
+        navigator.splashscreen.hide();
+  });
 }
+
 function onBackButton(){
 	page = $.mobile.pageContainer.pagecontainer('getActivePage').attr('id');
 	switch(page) {
@@ -40,6 +45,22 @@ function loading(showLoading){
 	}else{
 		$.mobile.loading( "hide",{});
 	}
+}
+
+function clearSuggest(){
+	$('#listSuggest').empty();
+	$('#txtBusqueda').val('');
+}
+
+function clearMap(){
+  capaKML!=null && mapajs.removeLayers(capaKML);
+	//capaJSON!=null && mapajs.removeLayers(capaJSON); //no funciona
+	capaJSON!=null && capaJSON.getImpl().destroy();
+	capaJSON = null;capaKML= null;
+}
+
+function errorExit(){
+  navigator.app.exitApp();
 }
 
 function geolocalizar(){
@@ -80,13 +101,15 @@ function cargarCategoria(cat){
 	     dataType: "json"
 	 }).done(function(categoriasList){
 	     	//cat==null->estamos en la primera categoría.
-	     	categoriasList = $.grep(categoriasList, function(value) {
+
+/*** exclusivo sedes ***/
+        categoriasList = $.grep(categoriasList, function(value) {
 			  return (cat!=null? true :
 	    		 	   coor_x!=null? true: //entrada por "Cerca de mí"
 	    		 					!(/equipamiento/i).test(value.name));
-			});
-	     	categoriasList.sort(sort_by('name', false));
-
+			  });
+/****/
+        if(sortCategories) categoriasList.sort(sort_by('name', false));
 
 	    	if (cat==null && categoriasList.length===1){
 	    	 	cargarCategoria(categoriasList[0]);
@@ -94,18 +117,10 @@ function cargarCategoria(cat){
 	    	 }else{
 	    	 	 htmlElements = [];
 	    		 for(i=0;i<categoriasList.length;i++){
-
-	        		 if(!categoriasList[i].last){
-			    		 htmlElements.push("<li><a href='javascript:cargarCategoria(" + JSON.stringify(categoriasList[i]) + ")'>" +
-			    				 "<img width='80px' height:'80px' src='" + url+ "/categorias/" + categoriasList[i].id + "/logo/" + "'/>" +
-			    				 categoriasList[i].name +
-			    		 "</a></li>");
-			    	 }else{
-			    		 htmlElements.push("<li><a href='javascript:cargarDatos(" + JSON.stringify(categoriasList[i]) + ")'>" +
-			    				 "<img width='80px' height:'80px' src='" + url+ "/categorias/" + categoriasList[i].id + "/logo/" + "'/>" +
-			    				 categoriasList[i].name +
-			    		 "</a></li>");
-			    	 }
+               funcionJS = categoriasList[i].last ? "javascript:cargarDatos" : "javascript:cargarCategoria";
+               htmlElements.push("<li><a href='" + funcionJS + "(" + JSON.stringify(categoriasList[i]) + ")'>" +
+                   "<img src='" + url+ "/categorias/" + categoriasList[i].id + "/logo/" + "' width='80' height='80' />" +
+                   categoriasList[i].name + "</a></li>");
 	    		 }
 
 		    	 htmlElements = "<ul id='listaCategorias' data-role='listview'>" + htmlElements.join(" ") + "</ul>";
@@ -113,12 +128,11 @@ function cargarCategoria(cat){
 		    	 $("#listaCategorias").listview();
            $("#titleCategorias").html(cat == null ? "Categorías" : cat.name);
 	    	}
-     }).fail(function(){
- 		 alert("Se ha producido un error al obtener las categorias");
- 	 }).always(function(){
- 	 	loading(false);
- 	 });
-
+   }).fail(function(){
+		     alert("Se ha producido un error al obtener las categorias");
+	 }).always(function(){
+	       loading(false);
+	 });
 }
 
 
@@ -127,7 +141,7 @@ function cargarDatos(cat){
 	pilaCategorias.push(cat);
 	datos.offset = 0;
 
-    $("#titleDatos").html(cat.name);
+  $("#titleDatos").html(cat.name);
 	$("#listaDatos").html("");
 	$.mobile.changePage("#datos");
 	paginarDatos(cat);
@@ -233,6 +247,11 @@ function verDato(idCategoria,dato){
 
   	mapajs.addKML(capaKML);
   	capaKML.getImpl().getOL3Layer().getSource().on('addfeature', function(e) {
+        if(window.isIOS){
+				      desc = e.feature.get('description').replace(/geo:(\-?\d+(\.\d+)?),\s?(\-?\d+(\.\d+)?)/g,
+                                                          "http://maps.apple.com");
+				      e.feature.set('description', desc);
+			  }
   			f=e.feature.clone(); //clono para no modificar la etiqueta
   			f.set('name', 'Información');
   			capaKML.getImpl().selectFeatures([f]);
@@ -249,16 +268,14 @@ function generarCapaKML(idCategoria,idDato){
 	return capaKML;
 }
 
-//funcion de entrada
-function init(){
-	loading(true);
+function getApp(){
 
-	$.ajax({
+	return $.ajax({
 		 url: url + "/application/" + idAplicacion,
 	     type: "GET",
 	     cache: true,
-	     dataType: "json",
-	     success: function(app){
+	     dataType: "json"
+	}).done(function(app){
 	    	 aplicacion = app;
 	    	 if(aplicacion.name != null){
 	    		 $("#app-name").html(aplicacion.name);
@@ -276,20 +293,11 @@ function init(){
 				container:"map",
 				wmcfile: searchParam(aplicacion.wmcURL,'wmcfile')
 			 });
-
-	    	 //$.mobile.changePage("#inicio");
-			   navigator.splashscreen.hide();
-	     },
-	     error: function(){
+     }).fail(function(){
          navigator.notification.alert("Se ha producido un error al obtener la aplicación con el id: "
                                         + idAplicacion, errorExit, "Error", "Salir")
-	 	 }
-	 });
-}
-
-function errorExit(){
-  navigator.app.exitApp();
-}
+	 	 });
+	 }
 
 function searchParam(stringURL, param){
 	paramValue ="";
@@ -300,7 +308,7 @@ function searchParam(stringURL, param){
 	 		return false;
 	  	}
   	});
-	return paramValue;
+	return paramValue.length>1? paramValue : paramValue.toString();
 }
 
 function inicio(){
@@ -313,10 +321,7 @@ function inicio(){
 	$("#listaDatos").empty();
 	clearSuggest();
 	$.mobile.changePage("#inicio");
-	capaKML!=null && mapajs.removeLayers(capaKML);
-	//capaJSON!=null && mapajs.removeLayers(capaJSON); //no funciona
-	capaJSON!=null && capaJSON.getImpl().destroy();
-	capaJSON = null; capaKML= null;
+	clearMap();
 }
 
 function atras(actualPage){
@@ -340,14 +345,12 @@ function atrasMapa(actualPage){ //JGL - cambiado (hay 2 puntos de entrada a mapa
 	}else{
 		inicio();
 	}
-	capaKML!=null && mapajs.removeLayers(capaKML);
-	//capaJSON!=null && mapajs.removeLayers(capaJSON); //no funciona
-	capaJSON!=null && capaJSON.getImpl().destroy();
-	capaJSON = null;capaKML= null;
+	clearMap();
 }
 
 
-//JGL ==================================== Integración de GB y modificaciones ===============================================
+
+/* Integración de GB */
 $(document).on("pageinit", "#busqueda", function() {
 	    $("#txtBusqueda").on("keyup", function () {
 	        var $ul = $("#listSuggest"),
@@ -433,11 +436,6 @@ function directResultGB(result){
 		verDatoGB(datosList[0]);
 
 	}
-}
-
-function clearSuggest(){
-	$('#listSuggest').empty();
-	$('#txtBusqueda').val('');
 }
 
 function verDatoGB(dato){

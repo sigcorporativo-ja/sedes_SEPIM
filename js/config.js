@@ -16,4 +16,6 @@ showDistance = false; //JGL - indica si mostrar la distancia o no en la búsqued
 gbRows = 150;
 M.proxy(false);
 attrNotShow = [ "the_geom", "geom", "geometry", "_version_", "solrid", "keywords", "equipamiento"];
-window.isApp 	= /^(?!HTTP)/.test(document.URL.toUpperCase()); 
+window.isApp 	= /^(?!HTTP)/.test(document.URL.toUpperCase());
+window.isIOS 	= /iPad|iPhone|iPod/.test(navigator.userAgent);
+sortCategories = true;

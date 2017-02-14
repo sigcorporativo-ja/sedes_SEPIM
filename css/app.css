@@ -51,3 +51,11 @@ td.value{
 .m-popup>div.m-content {
     text-align: left!important;
 }
+.m-wmcselector-container{
+   height: 21px!important;
+}
+/*bugs iOS*/
+.m-popup.m-collapsed {
+  top: 93vh;
+}
+/*bugs iOS*/
