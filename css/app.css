@@ -51,6 +51,13 @@ td.value{
 .m-popup>div.m-content {
     text-align: left!important;
 }
+.m-popup>div.m-content>div.m-header>div.m-title {
+    white-space: nowrap!important;
+    overflow: hidden!important;
+    text-overflow: ellipsis!important;
+    width: 90%!important;
+    margin-left: 1vh!important;
+}
 .m-wmcselector-container{
    height: 21px!important;
 }
