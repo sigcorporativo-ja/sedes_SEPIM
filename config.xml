@@ -14,14 +14,14 @@
 	</author>
 	<content src="index.html" />
 	<access origin="*" />
-	<preference name="webviewbounce" value="false"/>
-    <preference name="DisallowOverscroll" value="true"/>
+	<preference name="webviewbounce" value="true"/>
+    <preference name="DisallowOverscroll" value="false"/>
     <preference name="android-minSdkVersion" value="16"/>
     <preference name="BackupWebStorage" value="none"/>
     <preference name="StatusBarOverlaysWebView" value="false" />
-    <!--<feature name="StatusBar">
+    <feature name="StatusBar">
         <param name="ios-package" value="CDVStatusBar" onload="true"/>
-    </feature>-->
+    </feature>
   
   <!-- PERMISOS -->	
 	<preference name="permissions" value="none"/>	
