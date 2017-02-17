@@ -62,25 +62,82 @@ function clearMap(){
 function errorExit(){
   navigator.app.exitApp();
 }
+function showMessage(message, callback, title, buttonLabels, type){
+  if( window.isApp ) {
+        switch(type) {
+        case "prompt":
+            navigator.notification.prompt(
+                message,
+                callback,
+                title,
+                buttonLabels
+            );
+            break;
+        case "confirm":
+            navigator.notification.confirm(
+                message,
+                callback,
+                title,
+                buttonLabels
+            );
+            break;
+        default:
+            navigator.notification.alert(
+                message,
+                callback,
+                title,
+                buttonLabels
+            );
+      }
+    } else {
+      alert(message);
+    }
+    loading(false);
+}
+
 
 function geolocalizar(){
-	if (navigator.geolocation) {
-		  var successFunction = function(position){
-			  coor_x = position.coords.longitude;
-			  coor_y = position.coords.latitude;
-			  idEntidad = null;
-			  loading(false);
-			  cargarCategoria();
-		  };
-		  var errorFunction = function(){
-			  alert("Se ha producido un error al geolocalizar");
-			  loading(false);
-		  };
-		  loading(true);
-		  navigator.geolocation.getCurrentPosition(successFunction, errorFunction);
-		} else {
-		  alert("El navegador utilizado no soporta la geolocalización");
-		}
+    loading(true);
+    var successPosition = function(position){
+            coor_x = position.coords.longitude;
+            coor_y = position.coords.latitude;
+            idEntidad = null;
+            loading(false);
+            cargarCategoria()
+        };
+        
+    if (window.isApp){
+
+        cordova.plugins.diagnostic.isLocationAuthorized(function(authorized){
+            if(authorized){
+                cordova.plugins.diagnostic.isLocationEnabled(function(enabled){
+                    if (enabled) {
+                        navigator.geolocation.getCurrentPosition(successPosition);
+                    }else{
+                        showMessage("Por favor, active la localización",
+                            cordova.plugins.diagnostic.switchToLocationSettings,
+                            "Localización no disponible","Aceptar");                
+                    } 
+                }, function(error) {
+                    showMessage("Error intentando obtener la localización\n" + error,null,"Localización no disponible","Aceptar");
+                });
+            }else{
+                cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
+                    if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED){
+                        geolocalizar();
+                    }else{
+                        showMessage("No funcionará el apartado 'Cerca de mí'",null,"Localización no autorizada","Aceptar");
+                    }
+                }, function(error){
+                    showMessage("Error al geolocalizar\n" + error,null,"Error inesperado","Aceptar");
+                });        
+            }
+        }, function(error){
+            showMessage("Error al geolocalizar\n" + error,null,"Error inesperado","Aceptar");
+        });
+    }else{
+         navigator.geolocation.getCurrentPosition(successPosition);   
+    }
 }
 
 function cargarCategoria(cat){
@@ -129,7 +186,7 @@ function cargarCategoria(cat){
            $("#titleCategorias").html(cat == null ? "Categorías" : cat.name);
 	    	}
    }).fail(function(){
-		     alert("Se ha producido un error al obtener las categorias");
+        showMessage("Se ha producido un error al obtener las categorias",null,"Error","Aceptar");
 	 }).always(function(){
 	       loading(false);
 	 });
@@ -168,18 +225,21 @@ function paginarDatos(cat){
 	     cache: true,
 	     dataType: "json",
 	     success: function(datosList){
-	     	if(requestParam.indexOf('x')<0){ //si no es "cerca de mí"
+        msgNodatos = "No hay datos para el filtro aplicado";
+        if(requestParam.indexOf('x')<0){ //si no es "cerca de mí"
 		  		datosList.sort(sort_by('name',false, function(a){return a.toUpperCase()}));
-	       	}
+	      }else{
+            msgNodatos = "Sin resultados en 10 kilómetros";
+        }
 	    	 var i = 0;
 	    	 var length = datosList.length;
 	    	 if(length==0){
 	    		 if(datos.offset==0){
-	    			 alert("No hay datos para el filtro aplicado");
+             showMessage(msgNodatos,null,"Sin datos","Aceptar");
 	    			 loading(false);
 	    			 return;
 	    		 }else{
-	    			 alert("Ya no hay mas datos para este filtro");
+             showMessage("No hay mas datos para este filtro",null,"Sin datos","Aceptar");
 	    		 }
 	    	 }
 
@@ -231,7 +291,7 @@ function paginarDatos(cat){
 	    	 loading(false);
 	     },
 	 	 error: function(){
-	 		 alert("Se ha producido un error al obtener los datos");
+       showMessage("Se ha producido un error al obtener los datos",null,"Sin datos","Aceptar");
 	 		 loading(false);
 	 	 }
 	  });
@@ -294,7 +354,7 @@ function getApp(){
 				wmcfile: searchParam(aplicacion.wmcURL,'wmcfile')
 			 });
      }).fail(function(){
-         navigator.notification.alert("Se ha producido un error al obtener la aplicación con el id: "
+         showMessage("Se ha producido un error al obtener la aplicación con el id: "
                                         + idAplicacion, errorExit, "Error", "Salir")
 	 	 });
 	 }
@@ -400,7 +460,7 @@ function buscarGeobusquedas(query, callback){
         },
     	success: callback,
 	    error: function(){
-	 		 alert("Se ha producido un error al realizar la búsqueda");
+        showMessage("Se ha producido un error al realizar la búsqueda",null,"Error en la búsqueda","Aceptar");
 	 	},
 	 	final: function(){loading(false)}
     });
