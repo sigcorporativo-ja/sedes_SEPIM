@@ -95,25 +95,28 @@ function showMessage(message, callback, title, buttonLabels, type){
     loading(false);
 }
 
+var successPosition = function(position){
+        coor_x = position.coords.longitude;
+        coor_y = position.coords.latitude;
+        idEntidad = null;
+        loading(false);
+        cargarCategoria()
+    };
 function testCallback(){
-  alert("aqui");
-  cordova.plugins.diagnostic.switchToLocationSettings();
+  if (window.isIOS){
+    navigator.geolocation.getCurrentPosition(successPosition);
+  }else{
+    cordova.plugins.diagnostic.switchToLocationSettings();
+  }
 }
 function geolocalizar(){
     loading(true);
-    var successPosition = function(position){
-            coor_x = position.coords.longitude;
-            coor_y = position.coords.latitude;
-            idEntidad = null;
-            loading(false);
-            cargarCategoria()
-        };
-
     if (window.isApp){
       cordova.plugins.diagnostic.isLocationEnabled(function(enabled){
         if(enabled){
-            cordova.plugins.diagnostic.isLocationAuthorized(function(authorized){
-              if(authorized){
+            cordova.plugins.diagnostic.getLocationAuthorizationStatus(function(status){
+              if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED
+              || status == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
                   navigator.geolocation.getCurrentPosition(successPosition);
               }else{
                 cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
