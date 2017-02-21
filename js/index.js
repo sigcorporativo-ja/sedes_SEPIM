@@ -103,7 +103,7 @@ var successPosition = function(position){
         cargarCategoria()
 };
 var errorPosition = function(error){
-        showMessage("Error intentando obtener la localización\n" + error,null,"Localización no disponible","Aceptar");
+      showMessage("Error intentando obtener la localización\n" + error,null,"Localización no disponible","Aceptar");
 };
 
 
@@ -112,32 +112,69 @@ function geolocalizar(){
     if (window.isApp){
       cordova.plugins.diagnostic.isLocationEnabled(function(enabled){
         if(enabled){
-            cordova.plugins.diagnostic.isLocationAuthorized(function(authorized){
+            cordova.plugins.diagnostic.getLocationAuthorizationStatus(function(status){
+              authorized = false;
+              canRequest = false;
+              if(window.isIOS){
+                switch(status){
+                     case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
+                          authorized = false;
+                          canRequest = true;
+                          break;
+                     case cordova.plugins.diagnostic.permissionStatus.GRANTED:
+                     case cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE:
+                          authorized = true;
+                          canRequest = true;
+                          break;
+                    case cordova.plugins.diagnostic.permissionStatus.DENIED:
+                          authorized = false;
+                          canRequest = false;
+                          break;
+                }
+              }else{ //Android
+                switch(status){
+                    case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
+                          authorized = false;
+                          canRequest = true;
+                          break;
+                    case cordova.plugins.diagnostic.permissionStatus.GRANTED:
+                    case cordova.plugins.diagnostic.permissionStatus.DENIED:
+                          authorized = false;
+                          canRequest = true;
+                          break;
+                    case cordova.plugins.diagnostic.permissionStatus.DENIED_ALWAYS:
+                          authorized = false;
+                          canRequest = false;
+                          break;
+                }
+              }
+
               if(authorized){
                 navigator.geolocation.getCurrentPosition(successPosition, errorPosition, {timeout: 5000});
-              }else{
+              }else if(canRequest){
                 cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
-                    alert(status);
                     if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED
                     || status == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
-                        geolocalizar();
+                        navigator.geolocation.getCurrentPosition(successPosition, errorPosition, {timeout: 5000});
                     }else{
                         showMessage("No funcionará el apartado 'Cerca de mí'",null,"Localización no autorizada","Aceptar");
                     }
                 }, function(error){
                     showMessage("Error al obtener permisos de localización\n" + error,null,"Error inesperado","Aceptar");
                 });
+              } else { //aplicación NO autorizada explícitamente
+                showMessage("La aplicación no tiene permisos de localización",null,"Localización no autorizada","Aceptar")
               }
               }, function(error) {
                     errorPosition(error);
               });
         }else{
             showMessage("Por favor, active la localización",
-                 cordova.plugins.diagnostic.switchToLocationSettings,//only Android
+                 cordova.plugins.diagnostic.switchToLocationSettings,//solo Android
                 "Localización no disponible","Aceptar");
         }
      }, function(error){
-        showMessage("Error al geolocalizar\n" + error,null,"Error inesperado","Aceptar");
+        errorPosition(error);
      });
     }else{
        navigator.geolocation.getCurrentPosition(successPosition, errorPosition, {timeout: 5000});
