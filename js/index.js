@@ -101,14 +101,8 @@ var successPosition = function(position){
         idEntidad = null;
         loading(false);
         cargarCategoria()
-    };
-function testCallback(){
-  if (window.isIOS){
-    navigator.geolocation.getCurrentPosition(successPosition);
-  }else{
-    cordova.plugins.diagnostic.switchToLocationSettings();
-  }
-}
+};
+
 function geolocalizar(){
     loading(true);
     if (window.isApp && !window.isIOS){
@@ -119,7 +113,6 @@ function geolocalizar(){
               || status == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
                   navigator.geolocation.getCurrentPosition(successPosition);
               }else{
-                alert(status);
                 cordova.plugins.diagnostic.requestLocationAuthorization(function(newStatus){
                     if(newStatus == cordova.plugins.diagnostic.permissionStatus.GRANTED
                     || newStatus == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
@@ -136,14 +129,19 @@ function geolocalizar(){
               });
         }else{
             showMessage("Por favor, active la localización",
-                testCallback,
+                cordova.plugins.diagnostic.switchToLocationSettings,
                 "Localización no disponible","Aceptar");
         }
      }, function(error){
         showMessage("Error al geolocalizar\n" + error,null,"Error inesperado","Aceptar");
      });
     }else{
+        alert('ios');
+        try{
          navigator.geolocation.getCurrentPosition(successPosition);
+       }catch(e){
+         alert(e.message);
+       }
     }
 }
 
