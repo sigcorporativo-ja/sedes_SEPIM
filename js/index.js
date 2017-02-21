@@ -95,7 +95,10 @@ function showMessage(message, callback, title, buttonLabels, type){
     loading(false);
 }
 
-
+function testCallback(){
+  alert("aqui");
+  cordova.plugins.diagnostic.switchToLocationSettings();
+}
 function geolocalizar(){
     loading(true);
     var successPosition = function(position){
@@ -114,7 +117,7 @@ function geolocalizar(){
                         navigator.geolocation.getCurrentPosition(successPosition);
                     }else{
                         showMessage("Por favor, active la localización",
-                            cordova.plugins.diagnostic.switchToLocationSettings,
+                            testCallback,
                             "Localización no disponible","Aceptar");
                     }
                 }, function(error) {
