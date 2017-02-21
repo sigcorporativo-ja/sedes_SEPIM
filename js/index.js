@@ -133,6 +133,7 @@ function geolocalizar(){
                 }
               }else{ //Android
                 switch(status){
+                    // para API<23 siempre será GRANTED
                     case cordova.plugins.diagnostic.permissionStatus.NOT_REQUESTED:
                           authorized = false;
                           canRequest = true;
@@ -147,7 +148,6 @@ function geolocalizar(){
                           canRequest = false;
                           break;
                 }
-                alert(status,authorized);
               }
 
               if(authorized){
