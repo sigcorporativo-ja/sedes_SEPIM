@@ -103,7 +103,7 @@ var successPosition = function(position){
         cargarCategoria()
 };
 var errorPosition = function(error){
-      showMessage("Error intentando obtener la localización\n" + error,null,"Localización no disponible","Aceptar");
+      showMessage("Error intentando obtener la localización\n" + error.message,null,"Localización no disponible","Aceptar");
 };
 
 
@@ -124,7 +124,7 @@ function geolocalizar(){
                      case cordova.plugins.diagnostic.permissionStatus.GRANTED:
                      case cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE:
                           authorized = true;
-                          canRequest = true;
+                          canRequest = false;
                           break;
                     case cordova.plugins.diagnostic.permissionStatus.DENIED:
                           authorized = false;
@@ -147,6 +147,7 @@ function geolocalizar(){
                           canRequest = false;
                           break;
                 }
+                alert(status,authorized);
               }
 
               if(authorized){
