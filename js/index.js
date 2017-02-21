@@ -105,9 +105,8 @@ function geolocalizar(){
             loading(false);
             cargarCategoria()
         };
-        
-    if (window.isApp){
 
+    if (window.isApp){
         cordova.plugins.diagnostic.isLocationAuthorized(function(authorized){
             if(authorized){
                 cordova.plugins.diagnostic.isLocationEnabled(function(enabled){
@@ -116,27 +115,28 @@ function geolocalizar(){
                     }else{
                         showMessage("Por favor, active la localización",
                             cordova.plugins.diagnostic.switchToLocationSettings,
-                            "Localización no disponible","Aceptar");                
-                    } 
+                            "Localización no disponible","Aceptar");
+                    }
                 }, function(error) {
                     showMessage("Error intentando obtener la localización\n" + error,null,"Localización no disponible","Aceptar");
                 });
             }else{
                 cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
-                    if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED){
+                    if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED
+                    || status == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
                         geolocalizar();
                     }else{
                         showMessage("No funcionará el apartado 'Cerca de mí'",null,"Localización no autorizada","Aceptar");
                     }
                 }, function(error){
                     showMessage("Error al geolocalizar\n" + error,null,"Error inesperado","Aceptar");
-                });        
+                });
             }
         }, function(error){
             showMessage("Error al geolocalizar\n" + error,null,"Error inesperado","Aceptar");
         });
     }else{
-         navigator.geolocation.getCurrentPosition(successPosition);   
+         navigator.geolocation.getCurrentPosition(successPosition);
     }
 }
 
