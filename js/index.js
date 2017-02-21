@@ -124,11 +124,12 @@ function geolocalizar(){
                         showMessage("No funcionará el apartado 'Cerca de mí'",null,"Localización no autorizada","Aceptar");
                     }
                 }, function(error){
-                    showMessage("Error al geolocalizar\n" + error,null,"Error inesperado","Aceptar");
+                    showMessage("Error al obtener permisos de localización\n" + error,null,"Error inesperado","Aceptar");
                 });
+              }
               }, function(error) {
                     showMessage("Error intentando obtener la localización\n" + error,null,"Localización no disponible","Aceptar");
-            }});
+              });
         }else{
             showMessage("Por favor, active la localización",
                 testCallback,
