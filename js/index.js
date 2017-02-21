@@ -110,20 +110,12 @@ function geolocalizar(){
         };
 
     if (window.isApp){
-        cordova.plugins.diagnostic.isLocationAuthorized(function(authorized){
-            if(authorized){
-                cordova.plugins.diagnostic.isLocationEnabled(function(enabled){
-                    if (enabled) {
-                        navigator.geolocation.getCurrentPosition(successPosition);
-                    }else{
-                        showMessage("Por favor, active la localización",
-                            testCallback,
-                            "Localización no disponible","Aceptar");
-                    }
-                }, function(error) {
-                    showMessage("Error intentando obtener la localización\n" + error,null,"Localización no disponible","Aceptar");
-                });
-            }else{
+      cordova.plugins.diagnostic.isLocationEnabled(function(enabled){
+        if(enabled){
+            cordova.plugins.diagnostic.isLocationAuthorized(function(authorized){
+              if(authorized){
+                  navigator.geolocation.getCurrentPosition(successPosition);
+              }else{
                 cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
                     if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED
                     || status == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
@@ -134,10 +126,17 @@ function geolocalizar(){
                 }, function(error){
                     showMessage("Error al geolocalizar\n" + error,null,"Error inesperado","Aceptar");
                 });
-            }
-        }, function(error){
-            showMessage("Error al geolocalizar\n" + error,null,"Error inesperado","Aceptar");
-        });
+              }, function(error) {
+                    showMessage("Error intentando obtener la localización\n" + error,null,"Localización no disponible","Aceptar");
+            }});
+        }else{
+            showMessage("Por favor, active la localización",
+                testCallback,
+                "Localización no disponible","Aceptar");
+        }
+     }, function(error){
+        showMessage("Error al geolocalizar\n" + error,null,"Error inesperado","Aceptar");
+     });
     }else{
          navigator.geolocation.getCurrentPosition(successPosition);
     }
