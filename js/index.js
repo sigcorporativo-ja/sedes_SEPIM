@@ -117,6 +117,7 @@ function geolocalizar(){
                 navigator.geolocation.getCurrentPosition(successPosition, errorPosition, {timeout: 5000});
               }else{
                 cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
+                    alert(status);
                     if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED
                     || status == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
                         geolocalizar();
@@ -132,8 +133,7 @@ function geolocalizar(){
               });
         }else{
             showMessage("Por favor, active la localización",
-                window.isOS? cordova.plugins.diagnostic.switchToSettings
-                             : cordova.plugins.diagnostic.switchToLocationSettings,
+                 cordova.plugins.diagnostic.switchToLocationSettings,//only Android
                 "Localización no disponible","Aceptar");
         }
      }, function(error){
