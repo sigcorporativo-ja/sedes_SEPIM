@@ -115,6 +115,7 @@ function geolocalizar(){
       cordova.plugins.diagnostic.isLocationEnabled(function(enabled){
         if(enabled){
             cordova.plugins.diagnostic.getLocationAuthorizationStatus(function(status){
+              alert(status);
               if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED
               || status == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
                   navigator.geolocation.getCurrentPosition(successPosition);
