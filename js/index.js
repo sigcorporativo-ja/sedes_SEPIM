@@ -102,20 +102,23 @@ var successPosition = function(position){
         loading(false);
         cargarCategoria()
 };
+var errorPosition = function(error){
+        showMessage("Error intentando obtener la localización\n" + error,null,"Localización no disponible","Aceptar");
+};
+
 
 function geolocalizar(){
     loading(true);
-    if (window.isApp && !window.isIOS){
+    if (window.isApp){
       cordova.plugins.diagnostic.isLocationEnabled(function(enabled){
         if(enabled){
-            cordova.plugins.diagnostic.getLocationAuthorizationStatus(function(status){
-              if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED
-              || status == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
-                  navigator.geolocation.getCurrentPosition(successPosition);
+            cordova.plugins.diagnostic.isLocationAuthorized(function(authorized){
+              if(authorized){
+                navigator.geolocation.getCurrentPosition(successPosition, errorPosition, {timeout: 5000});
               }else{
-                cordova.plugins.diagnostic.requestLocationAuthorization(function(newStatus){
-                    if(newStatus == cordova.plugins.diagnostic.permissionStatus.GRANTED
-                    || newStatus == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
+                cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
+                    if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED
+                    || status == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
                         geolocalizar();
                     }else{
                         showMessage("No funcionará el apartado 'Cerca de mí'",null,"Localización no autorizada","Aceptar");
@@ -125,23 +128,19 @@ function geolocalizar(){
                 });
               }
               }, function(error) {
-                    showMessage("Error intentando obtener la localización\n" + error,null,"Localización no disponible","Aceptar");
+                    errorPosition(error);
               });
         }else{
             showMessage("Por favor, active la localización",
-                cordova.plugins.diagnostic.switchToLocationSettings,
+                window.isOS? cordova.plugins.diagnostic.switchToSettings
+                             : cordova.plugins.diagnostic.switchToLocationSettings,
                 "Localización no disponible","Aceptar");
         }
      }, function(error){
         showMessage("Error al geolocalizar\n" + error,null,"Error inesperado","Aceptar");
      });
     }else{
-        alert('ios');
-        try{
-         navigator.geolocation.getCurrentPosition(successPosition);
-       }catch(e){
-         alert(e.message);
-       }
+       navigator.geolocation.getCurrentPosition(successPosition, errorPosition, {timeout: 5000});
     }
 }
 
