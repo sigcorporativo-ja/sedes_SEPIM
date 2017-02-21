@@ -111,18 +111,18 @@ function testCallback(){
 }
 function geolocalizar(){
     loading(true);
-    if (window.isApp){
+    if (window.isApp && !window.isIOS){
       cordova.plugins.diagnostic.isLocationEnabled(function(enabled){
         if(enabled){
             cordova.plugins.diagnostic.getLocationAuthorizationStatus(function(status){
-              alert(status);
               if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED
               || status == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
                   navigator.geolocation.getCurrentPosition(successPosition);
               }else{
-                cordova.plugins.diagnostic.requestLocationAuthorization(function(status){
-                    if(status == cordova.plugins.diagnostic.permissionStatus.GRANTED
-                    || status == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
+                alert(status);
+                cordova.plugins.diagnostic.requestLocationAuthorization(function(newStatus){
+                    if(newStatus == cordova.plugins.diagnostic.permissionStatus.GRANTED
+                    || newStatus == cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE){
                         geolocalizar();
                     }else{
                         showMessage("No funcionará el apartado 'Cerca de mí'",null,"Localización no autorizada","Aceptar");
