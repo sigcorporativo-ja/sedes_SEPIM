@@ -5,9 +5,9 @@
 		versionCode = "100"
 		version     = "1.0.0" >
 
-	<name>ISE Sedes</name>
+	<name>Sedes y Equipamientos</name>
 	<description>
-		ISE Sedes - Equipamientos de la Junta de Andalucía
+		Sedes y Equipamientos de la Junta de Andalucía
 	</description>
 	<author email="sepim.ieca@juntadeandalucia.es" href="http://www.callejerodeandalucia.es/">
 		Junta de Andalucía
