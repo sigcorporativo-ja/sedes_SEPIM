@@ -18,7 +18,7 @@ body,
 .ui-page .ui-content {
   height: inherit;
   background: url("logo.png") no-repeat center bottom, url("fondo.jpg") no-repeat fixed center;
-  background-size: 70%, cover;
+  background-size: 30%, cover;
   }
 #mapa .ui-content{padding:0}
 /****/
