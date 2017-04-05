@@ -546,7 +546,14 @@ function verDatoGB(dato){
 	delete dato.geom;
 	f.setId(dato.solrid);
 	delete dato.solrid;
+	
+	// Control iOS
+	if(window.isIOS){
+	   desc = dato.llegar.replace(/geo:(\-?\d+(\.\d+)?),\s?(\-?\d+(\.\d+)?)/g, "http://maps.apple.com");
+	   dato.llegar = desc;
+	}
 	f.setProperties(dato);
+	
 	bbox = f.getGeometry().getExtent();
 	point = ol.extent.getCenter(bbox); //vale para todo tipo de geometrías
 
