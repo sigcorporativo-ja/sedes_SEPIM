@@ -514,11 +514,11 @@ function listarResultadosGB(result){
 	if (datosList!=null){
 		var htmlElements = [];
 		for(i=0;i<datosList.length;i++){
-			 var liHtml = "<li><a href='javascript:verDatoGB(" + JSON.stringify(datosList[i]) + ")'>";
+			 var liHtml = "<li><a href='javascript:verDatoGB(" + JSON.stringify(datosList[i]).replace(/'/g, "&apos;") + ")'>";
 			 if($.inArray("equipamiento",datosList[i].keywords)>-1){
-				liHtml += datosList[i].equipamiento;
+				liHtml += datosList[i].equipamiento.replace(/'/g, "&apos;");
 			 }else{
-			 	liHtml += datosList[i].organismo + " (" + datosList[i].municipio +")";
+			 	liHtml += datosList[i].organismo.replace(/'/g, "&apos;"); + " (" + datosList[i].municipio +")";
 			 }
 
 			 liHtml += "</a></li>";
