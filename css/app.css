@@ -65,4 +65,8 @@ td.value{
 .m-popup.m-collapsed {
   top: 93vh;
 }
+.m-areas>div.m-area>div.m-panel.m-map-info{
+  visibility: visible!important;
+}
+
 /*bugs iOS*/
